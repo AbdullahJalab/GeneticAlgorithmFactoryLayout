@@ -1,0 +1,93 @@
+%%coded by Eng.Abdullah Jalab in 1/22/2023 
+function [y1,y2]=ERXcrossover(x1,x2)
+y1(1)=x1(1);
+y2(1)=x2(1);
+len=[];
+for i=1:length(x1)-1
+   a1=y1(i);
+   indx=find(x1==a1);
+   b1=x1(examIndex(indx-1,length(x1)));%neighbor1 x1
+   if(ismember(b1,y1))
+       b1=0;
+   end
+   c1=x1(examIndex(indx+1,length(x1)));%neighbor1 x1
+   if(ismember(c1,y1))
+       c1=0;
+   end
+   
+   indx=find(x2==a1);
+   d1=x2(examIndex(indx-1,length(x1)));%neighbor1 x2
+   if(ismember(d1,y1))
+       d1=0;
+   end
+   e1=x2(examIndex(indx+1,length(x1)));%neighbor1 x2
+   if(ismember(e1,y1))
+       e1=0;
+   end
+   t1=[ b1 c1 d1 e1];
+   [t1,idx1]=unique(t1);
+   t1(idx1)=t1;
+   t1=nonzeros(t1);
+   %%%%%%%%%%%%%%%%%%%%%
+   a2=y2(i);
+   indx=find(x2==a2);
+   b2=x2(examIndex(indx-1,length(x1)));%neighbor1 x1
+   if(ismember(b2,y2))
+       b2=0;
+   end
+   c2=x2(examIndex(indx+1,length(x1)));%neighbor1 x1
+   if(ismember(c1,y1))
+       c2=0;
+   end
+   indx=find(x1==a2);
+   d2=x1(examIndex(indx-1,length(x1)));%neighbor1 x2
+   if(ismember(d2,y2))
+       d2=0;
+   end
+   e2=x1(examIndex(indx+1,length(x1)));%neighbor1 x2
+   if(ismember(e2,y2))
+       e2=0;
+   end
+   t2=[ b2 c2 d2 e2];
+   [t2,idx]=unique(t2);
+   t2(idx)=t2;
+   t2=nonzeros(t2);
+   %%%%%%%%%%%%%%%%%%%%%y1
+   for j=1:length(t1)
+    indx2=find(x1==t1(j));
+    indx3=find(x2==t1(j));
+    f=[x1(examIndex(indx2-1,length(x1))),x1(examIndex(indx2+1,length(x1))),...
+        x2(examIndex(indx3-1,length(x1))),x2(examIndex(indx3+1,length(x1)))];
+    f=unique(f);
+    len=[len,length(f)];
+   end
+   [l,ix]=min(len);
+   indces=find(len==l);
+   if(length(indces)>1)
+       r=randi([1,length(indces)]);
+       indx=indces(r);
+       y1(i+1)=t1(indx); 
+       len=[];
+   else
+       y1(i+1)=t1(ix); 
+        len=[];
+   end
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%y2
+   for j=1:length(t2)
+        indx2=find(x1==t2(j));
+        indx3=find(x2==t2(j));
+        f=[x1(examIndex(indx2-1,length(x1))),x1(examIndex(indx2+1,length(x1))),...
+            x2(examIndex(indx3-1,length(x1))),x2(examIndex(indx3+1,length(x1)))];
+        f=unique(f);
+        len=[len,length(f)];
+   end
+   l=min(len);
+   indces=find(len==l);
+   r=randi([1,length(indces)]);
+   indx=indces(r);
+   y2(i+1)=t2(indx);
+   len=[];
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end
+end
